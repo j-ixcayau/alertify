@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "824667822746",
+    "project_id": "alertify-flutter",
+    "storage_bucket": "alertify-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824667822746:android:708274d8bf2695f2f75d23",
+        "android_client_info": {
+          "package_name": "com.jixcayau.alertify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnNWw0Cw8zxr-UxIPwMTSom71nZ2Uv43g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
