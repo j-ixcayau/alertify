@@ -13,7 +13,7 @@ extension type UserService(FirebaseFirestore db) {
     try {
       final result = await _collection.doc(id).get();
 
-      if (result.exists) {
+      if (!result.exists) {
         return Error(Failure(message: 'User not found'));
       }
 

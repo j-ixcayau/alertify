@@ -1,8 +1,8 @@
-import 'package:alertify/entities/app_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:alertify/core/result.dart';
 import 'package:alertify/core/typedefs.dart';
+import 'package:alertify/entities/app_user.dart';
 import 'package:alertify/failures/auth_failure.dart';
 
 extension type AuthService(FirebaseAuth auth) {
@@ -72,4 +72,8 @@ extension type AuthService(FirebaseAuth auth) {
   Future<void> signOut() => auth.signOut();
 
   bool get logged => auth.currentUser != null;
+  String get userId => auth.currentUser?.uid ?? '';
+
+  (bool, String?) get isLogged =>
+      (auth.currentUser != null, auth.currentUser?.uid);
 }
