@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:alertify/ui/shared/extensions/build_context.dart';
-import 'package:alertify/ui/shared/widgets/user_list.dart';
 import 'package:alertify/ui/screens/home/tabs/requests/widgets/app_bar.dart';
 import 'package:alertify/ui/screens/home/tabs/requests/widgets/request_tile.dart';
+import 'package:alertify/ui/shared/extensions/build_context.dart';
+import 'package:alertify/ui/shared/widgets/user_list.dart';
 
 class RequestsTab extends StatelessWidget {
   const RequestsTab({super.key});

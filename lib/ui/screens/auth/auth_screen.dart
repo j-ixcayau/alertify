@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:alertify/ui/shared/extensions/build_context.dart';
 import 'package:alertify/ui/screens/sign_in/sign_in_screen.dart';
 import 'package:alertify/ui/screens/sign_up/sign_up_screen.dart';
+import 'package:alertify/ui/shared/extensions/build_context.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});

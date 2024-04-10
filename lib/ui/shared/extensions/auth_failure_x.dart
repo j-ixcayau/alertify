@@ -1,5 +1,6 @@
-import 'package:alertify/failures/auth_failure.dart';
 import 'package:flutter/material.dart';
+
+import 'package:alertify/failures/auth_failure.dart';
 
 extension SignInAuthFailureX on SignInAuthFailure {
   ({IconData icon, String message}) get errorData => switch (this) {

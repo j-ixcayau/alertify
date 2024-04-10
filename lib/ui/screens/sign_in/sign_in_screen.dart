@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:alertify/core/result.dart';
 import 'package:alertify/services/auth_service.dart';
 import 'package:alertify/ui/screens/home/home_screen.dart';
@@ -8,8 +12,6 @@ import 'package:alertify/ui/shared/extensions/auth_failure_x.dart';
 import 'package:alertify/ui/shared/extensions/build_context.dart';
 import 'package:alertify/ui/shared/validators/form_validator.dart';
 import 'package:alertify/ui/shared/widgets/flutter_masters_rich_text.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});

@@ -1,7 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:alertify/core/result.dart';
 import 'package:alertify/core/typedefs.dart';
 import 'package:alertify/failures/auth_failure.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 extension type AuthService(FirebaseAuth auth) {
   FutureAuthResult<void, SignInAuthFailure> signIn(

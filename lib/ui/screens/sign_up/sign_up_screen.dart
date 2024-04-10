@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:alertify/ui/screens/home/home_screen.dart';
+import 'package:alertify/ui/screens/sign_in/sign_in_screen.dart';
 import 'package:alertify/ui/shared/extensions/build_context.dart';
 import 'package:alertify/ui/shared/validators/form_validator.dart';
 import 'package:alertify/ui/shared/widgets/flutter_masters_rich_text.dart';
-import 'package:alertify/ui/screens/home/home_screen.dart';
-import 'package:alertify/ui/screens/sign_in/sign_in_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
