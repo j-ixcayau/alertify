@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../failures/failure.dart';
-import 'result.dart';
+import 'package:alertify/failures/failure.dart';
+import 'package:alertify/core/result.dart';
 
 typedef Json = Map<String, dynamic>;
 typedef FutureAuthResult<T, E> = Future<Result<T, E>>;

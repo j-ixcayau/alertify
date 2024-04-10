@@ -1,16 +1,15 @@
+import 'package:alertify/core/result.dart';
+import 'package:alertify/services/auth_service.dart';
+import 'package:alertify/ui/screens/home/home_screen.dart';
+import 'package:alertify/ui/screens/sign_up/sign_up_screen.dart';
+import 'package:alertify/ui/shared/dialogs/error_dialog.dart';
+import 'package:alertify/ui/shared/dialogs/loader_dialog.dart';
+import 'package:alertify/ui/shared/extensions/auth_failure_x.dart';
+import 'package:alertify/ui/shared/extensions/build_context.dart';
+import 'package:alertify/ui/shared/validators/form_validator.dart';
+import 'package:alertify/ui/shared/widgets/flutter_masters_rich_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import '../../../core/result.dart';
-import '../../../services/auth_service.dart';
-import '../../shared/dialogs/error_dialog.dart';
-import '../../shared/dialogs/loader_dialog.dart';
-import '../../shared/extensions/auth_failure_x.dart';
-import '../../shared/extensions/build_context.dart';
-import '../../shared/validators/form_validator.dart';
-import '../../shared/widgets/flutter_masters_rich_text.dart';
-import '../home/home_screen.dart';
-import '../sign_up/sign_up_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});

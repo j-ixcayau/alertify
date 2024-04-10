@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../shared/extensions/build_context.dart';
-import '../../../../shared/theme/palette.dart';
+import 'package:alertify/ui/shared/extensions/build_context.dart';
+import 'package:alertify/ui/shared/theme/palette.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});

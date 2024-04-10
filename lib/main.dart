@@ -1,14 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import 'firebase_options.dart';
-import 'ui/screens/auth/auth_screen.dart';
-import 'ui/screens/home/home_screen.dart';
-import 'ui/screens/search/search_screen.dart';
-import 'ui/screens/sign_in/sign_in_screen.dart';
-import 'ui/screens/sign_up/sign_up_screen.dart';
-import 'ui/screens/splash/splash_screen.dart';
-import 'ui/shared/theme/app_theme.dart';
+import 'package:alertify/firebase_options.dart';
+import 'package:alertify/ui/screens/auth/auth_screen.dart';
+import 'package:alertify/ui/screens/home/home_screen.dart';
+import 'package:alertify/ui/screens/search/search_screen.dart';
+import 'package:alertify/ui/screens/sign_in/sign_in_screen.dart';
+import 'package:alertify/ui/screens/sign_up/sign_up_screen.dart';
+import 'package:alertify/ui/screens/splash/splash_screen.dart';
+import 'package:alertify/ui/shared/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

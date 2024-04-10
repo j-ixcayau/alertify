@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../shared/theme/palette.dart';
+import 'package:alertify/ui/shared/theme/palette.dart';
 
 class RequestTile extends StatelessWidget {
   const RequestTile({

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../extensions/build_context.dart';
+import 'package:alertify/ui/shared/extensions/build_context.dart';
 
 class ErrorDialog extends StatelessWidget {
   const ErrorDialog._({

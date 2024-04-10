@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../shared/widgets/user_list.dart';
-import '../../shared/widgets/user_tile.dart';
-import 'widgets/app_bar.dart';
+import 'package:alertify/ui/shared/widgets/user_list.dart';
+import 'package:alertify/ui/shared/widgets/user_tile.dart';
+import 'package:alertify/ui/screens/search/widgets/app_bar.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});

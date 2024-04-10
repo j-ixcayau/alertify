@@ -1,12 +1,13 @@
+import 'package:alertify/core/result.dart';
+import 'package:alertify/core/typedefs.dart';
+import 'package:alertify/failures/auth_failure.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import '../core/result.dart';
-import '../core/typedefs.dart';
-import '../failures/auth_failure.dart';
 
 extension type AuthService(FirebaseAuth auth) {
   FutureAuthResult<void, SignInAuthFailure> signIn(
-      String email, String password) async {
+    String email,
+    String password,
+  ) async {
     try {
       final credentials = await auth.signInWithEmailAndPassword(
         email: email,

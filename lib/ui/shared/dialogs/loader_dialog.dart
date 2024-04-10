@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import '../extensions/build_context.dart';
+import 'package:alertify/ui/shared/extensions/build_context.dart';
 
 Future<T> showLoader<T>(BuildContext context, Future<T> future) async {
   showDialog(

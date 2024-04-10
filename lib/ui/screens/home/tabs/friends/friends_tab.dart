@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../../shared/extensions/build_context.dart';
-import '../../../../shared/widgets/user_list.dart';
-import '../../../../shared/widgets/user_tile.dart';
-import '../../../search/search_screen.dart';
-import 'widgets/app_bar.dart';
+import 'package:alertify/ui/shared/extensions/build_context.dart';
+import 'package:alertify/ui/shared/widgets/user_list.dart';
+import 'package:alertify/ui/shared/widgets/user_tile.dart';
+import 'package:alertify/ui/screens/search/search_screen.dart';
+import 'package:alertify/ui/screens/home/tabs/friends/widgets/app_bar.dart';
 
 class FriendsTab extends StatelessWidget {
   const FriendsTab({super.key});

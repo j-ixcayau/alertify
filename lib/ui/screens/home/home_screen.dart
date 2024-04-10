@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'tabs/friends/friends_tab.dart';
-import 'tabs/home/home_tab.dart';
-import 'tabs/profile/profile_tab.dart';
-import 'tabs/requests/requests_tab.dart';
-import 'widgets/bottom_navigation_bar.dart';
+import 'package:alertify/ui/screens/home/tabs/friends/friends_tab.dart';
+import 'package:alertify/ui/screens/home/tabs/home/home_tab.dart';
+import 'package:alertify/ui/screens/home/tabs/profile/profile_tab.dart';
+import 'package:alertify/ui/screens/home/tabs/requests/requests_tab.dart';
+import 'package:alertify/ui/screens/home/widgets/bottom_navigation_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

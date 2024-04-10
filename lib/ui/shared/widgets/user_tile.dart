@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../theme/palette.dart';
+import 'package:alertify/ui/shared/theme/palette.dart';
 
 class UserTile extends StatelessWidget {
   const UserTile({

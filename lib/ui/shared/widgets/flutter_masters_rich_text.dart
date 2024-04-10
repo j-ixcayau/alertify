@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../extensions/build_context.dart';
+import 'package:alertify/ui/shared/extensions/build_context.dart';
 
 class FlutterMastersRichText extends StatelessWidget {
   const FlutterMastersRichText({

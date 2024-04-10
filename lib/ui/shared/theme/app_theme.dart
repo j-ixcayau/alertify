@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'palette.dart';
+import 'package:alertify/ui/shared/theme/palette.dart';
 
 class AppTheme {
   const AppTheme._();
