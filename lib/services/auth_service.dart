@@ -1,3 +1,4 @@
+import 'package:alertify/entities/app_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:alertify/core/result.dart';
@@ -33,7 +34,7 @@ extension type AuthService(FirebaseAuth auth) {
     }
   }
 
-  FutureAuthResult<void, SignInAuthFailure> signUp(
+  FutureAuthResult<AppUser, SignInAuthFailure> signUp(
     String email,
     String password,
   ) async {
@@ -46,7 +47,14 @@ extension type AuthService(FirebaseAuth auth) {
       final user = credentials.user;
 
       if (user != null) {
-        return Success(null);
+        return Success(
+          AppUser(
+            id: user.uid,
+            username: user.displayName ?? '',
+            email: user.email ?? '',
+            photoUrl: user.photoURL,
+          ),
+        );
       }
 
       return Error(SignInAuthFailure.userNotFound);

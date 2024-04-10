@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:alertify/core/result.dart';
+import 'package:alertify/entities/app_user.dart';
 import 'package:alertify/services/auth_service.dart';
+import 'package:alertify/services/user_service.dart';
 import 'package:alertify/ui/screens/home/home_screen.dart';
 import 'package:alertify/ui/screens/sign_in/sign_in_screen.dart';
 import 'package:alertify/ui/shared/dialogs/error_dialog.dart';
@@ -24,6 +27,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final authService = AuthService(FirebaseAuth.instance);
+  final userService = UserService(FirebaseFirestore.instance);
 
   late final formKey = GlobalKey<FormState>();
 
@@ -41,22 +45,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
       authService.signUp(email, password),
     );
 
-    final failure = switch (result) {
-      Success() => null,
-      Error(value: final exception) => exception,
+    final record = switch (result) {
+      Success(value: final user) => (user: user, failure: null),
+      Error(value: final exception) => (user: null, failure: exception),
     };
 
-    if (failure == null) {
-      return context.pushNamedAndRemoveUntil<void>(HomeScreen.route);
+    if (record.failure != null) {
+      final data = record.failure!.errorData;
+
+      ErrorDialog.show(
+        context,
+        title: data.message,
+        icon: data.icon,
+      );
+      return;
     }
 
-    final data = failure.errorData;
+    createUser(record.user!);
+  }
 
-    ErrorDialog.show(
-      context,
-      title: data.message,
-      icon: data.icon,
+  Future<void> createUser(AppUser createdUser) async {
+    final newUser = AppUser(
+      id: createdUser.id,
+      username: userName,
+      email: createdUser.email,
+      photoUrl: createdUser.photoUrl,
     );
+
+    final result = await showLoader(
+      context,
+      userService.createUser(newUser),
+    );
+
+    final route = switch (result) {
+      Success() => HomeScreen.route,
+      Error() => null,
+    };
+
+    if (route != null) {
+      return context.pushNamedAndRemoveUntil<void>(route);
+    }
   }
 
   @override
