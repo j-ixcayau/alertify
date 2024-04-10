@@ -17,7 +17,7 @@ extension type AuthService(FirebaseAuth auth) {
       final user = credentials.user;
 
       if (user != null) {
-        Success(user);
+        return Success(null);
       }
 
       return Error(SignInAuthFailure.userNotFound);
@@ -31,4 +31,6 @@ extension type AuthService(FirebaseAuth auth) {
       return Error(SignInAuthFailure.unknown);
     }
   }
+
+  bool get logged => auth.currentUser != null;
 }

@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-
 import 'package:alertify/failures/auth_failure.dart';
+import 'package:flutter/material.dart';
 
 extension SignInAuthFailureX on SignInAuthFailure {
   ({IconData icon, String message}) get errorData => switch (this) {
@@ -19,6 +18,10 @@ extension SignInAuthFailureX on SignInAuthFailure {
         SignInAuthFailure.userDisabled => (
             icon: Icons.person_off,
             message: 'Your account has been disabled.'
+          ),
+        SignInAuthFailure.invalidCredential => (
+            icon: Icons.password,
+            message: 'Invalid credentials.'
           ),
         _ => (
             icon: Icons.error_outline,
