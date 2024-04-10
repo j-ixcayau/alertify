@@ -33,5 +33,35 @@ extension type AuthService(FirebaseAuth auth) {
     }
   }
 
+  FutureAuthResult<void, SignInAuthFailure> signUp(
+    String email,
+    String password,
+  ) async {
+    try {
+      final credentials = await auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final user = credentials.user;
+
+      if (user != null) {
+        return Success(null);
+      }
+
+      return Error(SignInAuthFailure.userNotFound);
+    } on FirebaseAuthException catch (e) {
+      final failure = SignInAuthFailure.values.firstWhere(
+        (it) => it.code == e.code,
+        orElse: () => SignInAuthFailure.unknown,
+      );
+      return Error(failure);
+    } catch (e) {
+      return Error(SignInAuthFailure.unknown);
+    }
+  }
+
+  Future<void> signOut() => auth.signOut();
+
   bool get logged => auth.currentUser != null;
 }

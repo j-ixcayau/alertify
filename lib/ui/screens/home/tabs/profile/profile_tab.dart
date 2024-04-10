@@ -1,10 +1,31 @@
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:alertify/services/auth_service.dart';
+import 'package:alertify/ui/screens/auth/auth_screen.dart';
+import 'package:alertify/ui/shared/dialogs/loader_dialog.dart';
 import 'package:alertify/ui/shared/extensions/build_context.dart';
 import 'package:alertify/ui/shared/theme/palette.dart';
 
-class ProfileTab extends StatelessWidget {
+class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
+
+  @override
+  State<ProfileTab> createState() => _ProfileTabState();
+}
+
+class _ProfileTabState extends State<ProfileTab> {
+  final authService = AuthService(FirebaseAuth.instance);
+
+  Future<void> signOut() async {
+    await showLoader(
+      context,
+      authService.signOut(),
+    );
+
+    return context.pushNamedAndRemoveUntil<void>(AuthScreen.route);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +53,7 @@ class ProfileTab extends StatelessWidget {
               ),
               const Spacer(),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () => signOut(),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Palette.darkGray,
                 ),

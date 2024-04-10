@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:alertify/core/result.dart';
+import 'package:alertify/services/auth_service.dart';
 import 'package:alertify/ui/screens/home/home_screen.dart';
 import 'package:alertify/ui/screens/sign_in/sign_in_screen.dart';
+import 'package:alertify/ui/shared/dialogs/error_dialog.dart';
+import 'package:alertify/ui/shared/dialogs/loader_dialog.dart';
+import 'package:alertify/ui/shared/extensions/auth_failure_x.dart';
 import 'package:alertify/ui/shared/extensions/build_context.dart';
 import 'package:alertify/ui/shared/validators/form_validator.dart';
 import 'package:alertify/ui/shared/widgets/flutter_masters_rich_text.dart';
@@ -16,6 +23,8 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final authService = AuthService(FirebaseAuth.instance);
+
   late final formKey = GlobalKey<FormState>();
 
   var userName = '';
@@ -26,7 +35,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (!formKey.currentState!.validate()) {
       return;
     }
-    return context.pushNamedAndRemoveUntil<void>(HomeScreen.route);
+
+    final result = await showLoader(
+      context,
+      authService.signUp(email, password),
+    );
+
+    final failure = switch (result) {
+      Success() => null,
+      Error(value: final exception) => exception,
+    };
+
+    if (failure == null) {
+      return context.pushNamedAndRemoveUntil<void>(HomeScreen.route);
+    }
+
+    final data = failure.errorData;
+
+    ErrorDialog.show(
+      context,
+      title: data.message,
+      icon: data.icon,
+    );
   }
 
   @override
