@@ -1,5 +1,9 @@
 name: HelloWorld
-on: workflow_dispatch
+on:
+    push:
+        branches:
+            - main
+            - develop
 jobs:
     helloworld:
         runs-on: macos-latest
