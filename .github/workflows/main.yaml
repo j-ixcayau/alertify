@@ -2,8 +2,7 @@ name: FLUTTER_MASTER
 on:
     push:
         branches:
-            - master
-            # - feature/githubActionsConfig
+            - feature/githubActionsConfig
 
 env:
     flutter_version: '3.19.5'
