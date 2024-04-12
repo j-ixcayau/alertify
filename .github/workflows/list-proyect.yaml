@@ -2,7 +2,7 @@ name: List Project
 on:
     push:
         branches:
-            - feature/githubActionsConfig
+            - master
 jobs:
     listproject:
         runs-on: macos-latest

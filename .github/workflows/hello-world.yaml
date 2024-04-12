@@ -2,7 +2,7 @@ name: Hello World Alertify
 on:
     push:
         branches:
-            - feature/githubActionsConfig
+            - master
 jobs:
     helloworld:
         runs-on: macos-latest
