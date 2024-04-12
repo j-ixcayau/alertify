@@ -22,3 +22,5 @@ jobs:
               with:
                   channel: stable
                   flutter-version: 3.19.0
+            - name: Check - Flutter
+              run: flutter doctor
