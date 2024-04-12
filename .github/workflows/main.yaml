@@ -5,7 +5,7 @@ on:
             - feature/githubActionsConfig
 
 jobs:
-    flutter_master_dev:
+    build-apps:
         runs-on: macos-latest
         steps:
             - name: Cache Primes
@@ -44,17 +44,31 @@ jobs:
             - name: Build - Apk
               run: flutter build apk --release
 
-            - name: Install - Google credentials
+            # - name: Build - IPA
+            #   run: flutter build apk --release --export-options=ios/Runner/ExportOptions.plist
+
+            - name: Export - Artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                  name: apk-and-ipa
+                  path: |
+                      build/app/outputs/flutter-apk/app-release.apk
+
+    distribute-apps:
+        needs: build-apps # This is important
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: COPY .
+              uses: actions/checkout@v4
+            - uses: actions/download-artifact@v2
+              with:
+                  path: build/app/outputs/flutter-apk/app-release.apk
+
+            - name: Export - Firebase distribution
               uses: wzieba/Firebase-Distribution-Github-Action@v1
               with:
                   appId: 1:824667822746:android:708274d8bf2695f2f75d23
                   serviceCredentialsFileContent: ${{ secrets.GOOGLE_CREDENTIALS }}
                   groups: testers
                   file: build/app/outputs/flutter-apk/app-release.apk
-
-            - name: Export - artifacts
-              uses: actions/upload-artifact@v4
-              with:
-                  name: apk-and-ipa
-                  path: |
-                      build/app/outputs/flutter-apk/app-release.apk
