@@ -10,21 +10,27 @@ jobs:
         steps:
             - name: COPY .
               uses: actions/checkout@v4
+
             - name: Install - Java
               uses: actions/setup-java@v4
               with:
                   distribution: 'temurin'
                   java-version: '11'
+
             - name: Install - Firebase Tools
               run: npm install -g firebase-tools
+
             - name: Install - Flutter
               uses: subosito/flutter-action@v2
               with:
                   channel: stable
                   flutter-version: 3.19.5
+
             - name: Check - Flutter
               run: flutter doctor
+
             - name: Check - Flutter test
               run: flutter test
+
             - name: Check - Flutter analyze
               run: flutter analyze
