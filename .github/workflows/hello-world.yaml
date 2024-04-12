@@ -2,11 +2,10 @@ name: HelloWorld
 on:
     push:
         branches:
-            - main
-            - develop
+            - feature/githubActionsConfig
 jobs:
-    helloworld:
+    listproject:
         runs-on: macos-latest
         steps:
-            - name: Hello World
-              run: echo  'Hello World'
+            - name: Build apk
+              run: flutter build apk
