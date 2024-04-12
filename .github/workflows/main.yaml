@@ -8,6 +8,15 @@ jobs:
     flutter_master_dev:
         runs-on: macos-latest
         steps:
+            - name: Cache Primes
+              id: cache-primes
+              uses: actions/cache@v4
+              with:
+                  path: |
+                      **/nodemodules
+                      **/Users/Runner/
+                  key: ${{ runner.os }}-primes
+
             - name: COPY .
               uses: actions/checkout@v4
 
@@ -37,3 +46,9 @@ jobs:
 
             - name: Build - Apk
               run: flutter build apk --release
+
+            - uses: actions/upload-artifact@v4
+              with:
+                  name: apk-and-ipa
+                  path: |
+                      build/app/outputs/flutter-apk/app-release.apk
