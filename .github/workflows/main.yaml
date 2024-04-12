@@ -61,13 +61,16 @@ jobs:
             - name: COPY .
               uses: actions/checkout@v4
             - uses: actions/download-artifact@v2
-              with:
-                  name: android_apk
+            #   with:
+            #       name: android_apk
+            #       path: ./app-release.apk
+            - name: Display structure of downloaded files
+              run: ls -R
 
-            - name: Export - Firebase distribution
-              uses: wzieba/Firebase-Distribution-Github-Action@v1
-              with:
-                  appId: 1:824667822746:android:708274d8bf2695f2f75d23
-                  serviceCredentialsFileContent: ${{ secrets.GOOGLE_CREDENTIALS }}
-                  groups: testers
-                  file: app-release.apk
+            # - name: Export - Firebase distribution
+            #   uses: wzieba/Firebase-Distribution-Github-Action@v1
+            #   with:
+            #       appId: 1:824667822746:android:708274d8bf2695f2f75d23
+            #       serviceCredentialsFileContent: ${{ secrets.GOOGLE_CREDENTIALS }}
+            #       groups: testers
+            #       file: app-release.apk
