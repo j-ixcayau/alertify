@@ -4,6 +4,9 @@ on:
         branches:
             - feature/githubActionsConfig
 
+env:
+    flutter_version: '3.19.5'
+
 jobs:
     build-apps:
         runs-on: macos-latest
@@ -24,7 +27,7 @@ jobs:
               uses: subosito/flutter-action@v2
               with:
                   channel: stable
-                  flutter-version: 3.19.5
+                  flutter-version: ${{env.flutter_version}}
 
             - name: Check - Flutter
               run: flutter doctor

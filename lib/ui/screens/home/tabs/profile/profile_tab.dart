@@ -65,7 +65,14 @@ class _ProfileTabState extends State<ProfileTab> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 50),
-                  const CircleAvatar(radius: 50),
+                  CircleAvatar(
+                    radius: 50,
+                    child: (user.photoUrl != null)
+                        ? Image(
+                            image: NetworkImage(user.photoUrl!),
+                          )
+                        : null,
+                  ),
                   const SizedBox(height: 10),
                   Text(
                     user.username,
