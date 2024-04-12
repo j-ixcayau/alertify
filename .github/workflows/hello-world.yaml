@@ -1,11 +1,11 @@
-name: HelloWorld
+name: Hello World Alertify
 on:
     push:
         branches:
             - feature/githubActionsConfig
 jobs:
-    listproject:
+    helloworld:
         runs-on: macos-latest
         steps:
-            - name: Build apk
-              run: flutter build apk
+            - name: Hello World
+              run: echo 'Hello World'
