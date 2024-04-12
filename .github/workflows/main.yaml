@@ -10,3 +10,7 @@ jobs:
         steps:
             - name: COPY .
               uses: actions/checkout@v4
+            - name: Secres print
+              uses: echo '${{secrets.Hello}}'
+            - name: Vars print
+              uses: echo '${{vars.Hello}}'
