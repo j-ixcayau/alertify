@@ -11,12 +11,6 @@ jobs:
             - name: COPY .
               uses: actions/checkout@v4
 
-            - name: Install - Java
-              uses: actions/setup-java@v4
-              with:
-                  distribution: 'temurin'
-                  java-version: '11'
-
             - name: Install - Firebase Tools
               run: npm install -g firebase-tools
 
@@ -34,3 +28,12 @@ jobs:
 
             - name: Check - Flutter analyze
               run: flutter analyze
+
+            - name: Install - Java
+              uses: actions/setup-java@v4
+              with:
+                  distribution: 'temurin'
+                  java-version: '11'
+
+            - name: Build - Apk
+              run: flutter build apk --release
