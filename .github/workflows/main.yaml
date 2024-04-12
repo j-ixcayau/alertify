@@ -2,7 +2,8 @@ name: FLUTTER_MASTER
 on:
     push:
         branches:
-            - feature/githubActionsConfig
+            - master
+            # - feature/githubActionsConfig
 
 env:
     flutter_version: '3.19.5'
@@ -61,7 +62,8 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/download-artifact@v2
+            - name: Download - artifacts
+              uses: actions/download-artifact@v2
               with:
                   name: android_apk
             #       path: ./app-release.apk
