@@ -8,7 +8,7 @@ import 'package:alertify/failures/failure.dart';
 import 'package:alertify/ui/shared/extensions/iterable_x.dart';
 
 extension type FriendshipService(FirebaseFirestore db) {
-  CollectionReference<Json> get _collection => db.collection('friendship');
+  CollectionReference<Json> get _collection => db.collection('friendships');
   CollectionReference<Json> get _userCollection => db.collection('users');
 
   FutureResult<List<FriendshipData>> getFriends(String userId) async {
@@ -48,14 +48,8 @@ extension type FriendshipService(FirebaseFirestore db) {
   Future<List<Friendship>> _getFriendshipIds(String userId) async {
     try {
       final snapshot = await _collection
-          .where(
-            'status',
-            isEqualTo: FriendshipStatus.active.name,
-          )
-          .where(
-            'users',
-            arrayContains: userId,
-          )
+          .where('status', isEqualTo: FriendshipStatus.active.name)
+          .where('users', arrayContains: userId)
           .get();
 
       return snapshot.docs.map((it) => it.toFriendship()).toList();
