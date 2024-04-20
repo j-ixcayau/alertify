@@ -1,12 +1,11 @@
-name: HelloWorld
+name: Hello World Alertify
 on:
     push:
         branches:
-            - main
-            - develop
+            - none
 jobs:
     helloworld:
         runs-on: macos-latest
         steps:
             - name: Hello World
-              run: echo  'Hello World'
+              run: echo 'Hello World'
