@@ -7,7 +7,7 @@ void main() {
       //arrange
       var sum = 0;
       //act
-      sum = sum + 12;
+      sum = sum + 1;
 
       //assert
       expect(sum, 1);

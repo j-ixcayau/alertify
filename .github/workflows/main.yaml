@@ -2,7 +2,7 @@ name: FLUTTER_MASTER
 on:
     push:
         branches:
-            - feature/githubActionsConfig # Trigger this workflow on pushes to the specified branch
+            - develop # Trigger this workflow on pushes to the specified branch
 
 env:
     flutter_version: '3.19.5' # Define the Flutter version to be used
