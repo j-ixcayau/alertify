@@ -57,4 +57,47 @@ extension type FriendshipService(FirebaseFirestore db) {
       rethrow;
     }
   }
+
+  FutureResult<List<FriendshipData>> getFriendshipsRequest(
+    String userId,
+  ) async {
+    try {
+      final snapshot = await _collection
+          .where('senderId', isNotEqualTo: userId)
+          .where('users', arrayContains: userId)
+          .where('status', isEqualTo: FriendshipStatus.pending.name)
+          .get();
+
+      final friendships = snapshot.docs.map((it) => it.toFriendship()).toList();
+
+      if (friendships.isEmpty) {
+        return Success(<FriendshipData>[]);
+      }
+
+      final userIds = friendships
+          .map(
+            (it) => it.users.firstWhereOrNull((id) => id != userId),
+          )
+          .toList();
+      userIds.removeWhere((it) => it == null);
+
+      final usersDocs =
+          await _userCollection.where('id', arrayContains: userIds).get();
+
+      final users = usersDocs.docs.map((it) => it.toAppUser()).toList();
+
+      final data = <FriendshipData>[];
+
+      for (final user in users) {
+        final friendship =
+            friendships.firstWhereOrNull((it) => it.users.contains(user.id));
+
+        data.add((friendship: friendship, user: user));
+      }
+
+      return Success(data);
+    } catch (e) {
+      return Error(Failure(message: e.toString()));
+    }
+  }
 }
