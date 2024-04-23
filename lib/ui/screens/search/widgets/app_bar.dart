@@ -6,7 +6,10 @@ class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
   const SearchAppBar({
     super.key,
     required this.onSearch,
+    this.controller,
   });
+
+  final TextEditingController? controller;
   final void Function(String query) onSearch;
 
   @override
@@ -16,8 +19,15 @@ class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _SearchAppBarState extends State<SearchAppBar> {
-  final _controller = TextEditingController();
+  late TextEditingController _controller;
   Timer? _timer;
+
+  @override
+  void initState() {
+    _controller = widget.controller ?? TextEditingController();
+
+    super.initState();
+  }
 
   @override
   void dispose() {

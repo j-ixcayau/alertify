@@ -133,4 +133,49 @@ extension type FriendshipService(FirebaseFirestore db) {
       return Error(Failure(message: e.toString()));
     }
   }
+
+  FutureResult<Friendship> sendFriendshipRequest(
+    String senderId,
+    String recipientId,
+  ) async {
+    try {
+      final snapshot = await _collection
+          .where('users', arrayContains: recipientId)
+          .where('sender', isEqualTo: senderId)
+          .where('status', isNotEqualTo: FriendshipStatus.archived.name)
+          .get();
+
+      final data = {
+        'users': [
+          senderId,
+          recipientId,
+        ],
+        'sender': senderId,
+        'status': FriendshipStatus.pending.name,
+        'createdAt': FieldValue.serverTimestamp(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      };
+
+      if (snapshot.docs.isEmpty) {
+        final ref = await _collection.add(data);
+
+        return Success((await ref.get()).toFriendship());
+      }
+
+      final firstDoc = snapshot.docs.first;
+      final friendship = firstDoc.toFriendship();
+
+      if (friendship.status == FriendshipStatus.active) {
+        return Error(Failure(message: 'El usuario ya es tu amigo <3'));
+      }
+
+      if (friendship.status == FriendshipStatus.pending) {
+        return Error(Failure(message: 'Ya existe una solicitud'));
+      }
+
+      return Success(friendship);
+    } catch (e) {
+      return Error(Failure(message: e.toString()));
+    }
+  }
 }

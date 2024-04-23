@@ -16,15 +16,15 @@ extension DocumentSnapshotX on DocumentSnapshot<Json> {
 
   Friendship toFriendship() {
     return Friendship(
-      id: this['id'],
+      id: id,
       status: FriendshipStatus.values.firstWhere(
         (it) => it.name == this['status'],
         orElse: () => FriendshipStatus.archived,
       ),
-      createdAt: DateTime.parse(this['createdAt']),
-      updatedAt: DateTime.parse(this['updatedAt']),
-      senderId: this['senderId'],
-      users: this['users'],
+      createdAt: this['createdAt'].toDate(),
+      updatedAt: this['updatedAt'].toDate(),
+      senderId: this['sender'],
+      users: List<String>.from(this['users']),
     );
   }
 }
