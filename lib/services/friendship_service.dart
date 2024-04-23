@@ -100,4 +100,37 @@ extension type FriendshipService(FirebaseFirestore db) {
       return Error(Failure(message: e.toString()));
     }
   }
+
+  FutureResult<FriendshipData> searchUser(String userId, String email) async {
+    try {
+      final userSnapshot = await _userCollection
+          .where('email', isEqualTo: email)
+          .where('id', isNotEqualTo: userId)
+          .limit(1)
+          .get();
+
+      if (userSnapshot.docs.isEmpty) {
+        return Error(Failure(message: 'No user were found'));
+      }
+
+      final user = userSnapshot.docs.first.toAppUser();
+
+      final friendshipSnapshot =
+          await _collection.where('users', arrayContains: user.id).get();
+
+      final userFriendshipsRequests =
+          friendshipSnapshot.docs.map((it) => it.toFriendship()).toList();
+
+      if (userFriendshipsRequests.isEmpty) {
+        return Success((friendship: null, user: user));
+      }
+
+      final friendship = userFriendshipsRequests
+          .firstWhereOrNull((it) => it.users.contains(userId));
+
+      return Success((friendship: friendship, user: user));
+    } catch (e) {
+      return Error(Failure(message: e.toString()));
+    }
+  }
 }

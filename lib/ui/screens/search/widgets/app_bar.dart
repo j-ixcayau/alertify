@@ -31,7 +31,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
     _timer = Timer(
       const Duration(milliseconds: 500),
       () {
-        widget.onSearch(query);
+        widget.onSearch(query.trim());
       },
     );
   }
