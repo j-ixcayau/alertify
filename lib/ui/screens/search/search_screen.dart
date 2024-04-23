@@ -47,20 +47,21 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final authService = AuthService(FirebaseAuth.instance);
-  final friendshipService = FriendshipService(FirebaseFirestore.instance);
+  final _authService = AuthService(FirebaseAuth.instance);
+  final _friendshipService = FriendshipService(FirebaseFirestore.instance);
 
-  SearchState state = const SearchLoadingState();
-  late String userId;
+  SearchState _state = const SearchLoadingState();
+  late String _userId;
 
-  final controller = TextEditingController(text: '');
+  final _controller = TextEditingController(text: '');
 
   @override
   void initState() {
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => loadFriendshipRequest());
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _loadFriendshipRequest(),
+    );
 
-    userId = authService.userId;
+    _userId = _authService.userId;
 
     super.initState();
   }
@@ -69,21 +70,10 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SearchAppBar(
-        onSearch: (email) {
-          if (email.isEmpty) {
-            return;
-          }
-
-          final emailCheckMsg = FormValidator.email(email);
-          if (emailCheckMsg != null) {
-            return;
-          }
-
-          searchUser(email);
-        },
-        controller: controller,
+        onSearch: (email) => searchUser(email),
+        controller: _controller,
       ),
-      body: switch (state) {
+      body: switch (_state) {
         SearchLoadingState() =>
           const Center(child: CircularProgressIndicator()),
         SearchLoadedState(friends: final friends) when friends.isEmpty =>
@@ -92,16 +82,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         SearchLoadedState(friends: final friends) => RefreshIndicator(
             onRefresh: () async {
-              final email = controller.text.trim();
-
-              if (email.isEmpty) {
-                return;
-              }
-
-              final emailCheckMsg = FormValidator.email(email);
-              if (emailCheckMsg != null) {
-                return;
-              }
+              final email = _controller.text.trim();
 
               await searchUser(email);
             },
@@ -114,16 +95,15 @@ class _SearchScreenState extends State<SearchScreen> {
 
                 return switch (status) {
                   (null || FriendshipStatus.archived) => UserTile(
-                      onPressed: () => sendFriendship(data),
+                      onPressed: () => _sendFriendship(data),
                       username: data.user.username,
                       email: data.user.email,
                       trailingIcon: Icons.person_add,
                     ),
                   FriendshipStatus.pending
-                      when friendship?.senderId == userId =>
+                      when friendship?.senderId == _userId =>
                     UserTile(
-                      // TODO: Add method to cancel friendship
-                      onPressed: () {},
+                      onPressed: () => _cancelFriendship(data),
                       username: data.user.username,
                       email: data.user.email,
                       trailingIcon: Icons.remove_circle_outline,
@@ -150,13 +130,26 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Future<void> loadFriendshipRequest() async {
-    setState(() => state = const SearchLoadingState());
+  Future<void> searchUser(String email) async {
+    if (email.isEmpty) {
+      return;
+    }
+
+    final emailCheckMsg = FormValidator.email(email);
+    if (emailCheckMsg != null) {
+      return;
+    }
+
+    await _searchUser(email);
+  }
+
+  Future<void> _loadFriendshipRequest() async {
+    setState(() => _state = const SearchLoadingState());
 
     final result =
-        await friendshipService.getFriendshipsRequest(authService.userId);
+        await _friendshipService.getFriendshipsRequest(_authService.userId);
 
-    state = switch (result) {
+    _state = switch (result) {
       Success(value: final friends) => SearchLoadedState(friends: friends),
       Error(value: final failure) =>
         SearchLoadedErrorState(error: failure.message),
@@ -165,13 +158,13 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() {});
   }
 
-  Future<void> searchUser(String email) async {
-    setState(() => state = const SearchLoadingState());
+  Future<void> _searchUser(String email) async {
+    setState(() => _state = const SearchLoadingState());
 
     final result =
-        await friendshipService.searchUser(authService.userId, email);
+        await _friendshipService.searchUser(_authService.userId, email);
 
-    state = switch (result) {
+    _state = switch (result) {
       Success(value: final friendship) =>
         SearchLoadedState(friends: [friendship]),
       Error(value: final failure) =>
@@ -181,27 +174,63 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() {});
   }
 
-  Future<void> sendFriendship(FriendshipData friendshipData) async {
+  Future<void> _sendFriendship(FriendshipData friendshipData) async {
     final result = await showLoader(
       context,
-      friendshipService.sendFriendshipRequest(userId, friendshipData.user.id),
+      _friendshipService.sendFriendshipRequest(_userId, friendshipData.user.id),
     );
 
     final friendship = switch (result) {
       Success(value: final friendship) =>
-        addNewData(friendship, friendshipData),
-      Error() => data
+        _addNewData(friendship, friendshipData),
+      Error() => _data
     };
 
-    state = SearchLoadedState(friends: friendship);
+    _state = SearchLoadedState(friends: friendship);
     setState(() {});
   }
 
-  List<FriendshipData> addNewData(
+  List<FriendshipData> get _data => switch (_state) {
+        SearchLoadedState(friends: final friends) => friends,
+        _ => []
+      };
+
+  Future<void> _cancelFriendship(FriendshipData data) async {
+    final friendship = data.friendship;
+
+    if (friendship == null) {
+      return;
+    }
+
+    final result = await showLoader(
+      context,
+      _friendshipService.cancelFriendshipRequest(friendship.id),
+    );
+
+    final friendshipData = switch (result) {
+      Success() => _addNewData(
+          Friendship(
+            id: friendship.id,
+            status: FriendshipStatus.archived,
+            createdAt: friendship.createdAt,
+            updatedAt: DateTime.now(),
+            senderId: friendship.senderId,
+            users: friendship.users,
+          ),
+          data,
+        ),
+      Error() => _data
+    };
+
+    _state = SearchLoadedState(friends: friendshipData);
+    setState(() {});
+  }
+
+  List<FriendshipData> _addNewData(
     Friendship friendship,
     FriendshipData friendshipData,
   ) {
-    final friendshipsList = [...data];
+    final friendshipsList = [..._data];
 
     final index = friendshipsList
         .indexWhere((it) => it.user.id == friendshipData.user.id);
@@ -215,9 +244,4 @@ class _SearchScreenState extends State<SearchScreen> {
 
     return friendshipsList;
   }
-
-  List<FriendshipData> get data => switch (state) {
-        SearchLoadedState(friends: final friends) => friends,
-        _ => []
-      };
 }

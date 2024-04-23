@@ -178,4 +178,26 @@ extension type FriendshipService(FirebaseFirestore db) {
       return Error(Failure(message: e.toString()));
     }
   }
+
+  FutureResult<void> cancelFriendshipRequest(String friendshipId) async {
+    try {
+      final friendshipRef = _collection.doc(friendshipId);
+      final snapshot = await friendshipRef.get();
+
+      if (!snapshot.exists) {
+        return Error(Failure(message: 'The friendship request does not exist'));
+      }
+
+      await friendshipRef.update(
+        {
+          'status': FriendshipStatus.archived.name,
+          'updatedAt': FieldValue.serverTimestamp(),
+        },
+      );
+
+      return Success(null);
+    } catch (e) {
+      return Error(Failure(message: e.toString()));
+    }
+  }
 }
