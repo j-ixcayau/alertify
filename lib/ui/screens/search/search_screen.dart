@@ -14,6 +14,7 @@ import 'package:alertify/ui/shared/validators/form_validator.dart';
 import 'package:alertify/ui/shared/widgets/user_list.dart';
 import 'package:alertify/ui/shared/widgets/user_tile.dart';
 
+/*  */
 sealed class SearchState {
   const SearchState();
 }
