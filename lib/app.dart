@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:sentry_flutter/sentry_flutter.dart';
+
 import 'package:alertify/ui/screens/auth/auth_screen.dart';
 import 'package:alertify/ui/screens/home/home_screen.dart';
 import 'package:alertify/ui/screens/search/search_screen.dart';
@@ -18,6 +20,9 @@ class MainApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.theme,
+        navigatorObservers: [
+          SentryNavigatorObserver(),
+        ],
         routes: {
           SplashScreen.route: (_) => const SplashScreen(),
           AuthScreen.route: (_) => const AuthScreen(),
