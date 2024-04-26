@@ -14,7 +14,6 @@ import 'package:alertify/ui/shared/validators/form_validator.dart';
 import 'package:alertify/ui/shared/widgets/user_list.dart';
 import 'package:alertify/ui/shared/widgets/user_tile.dart';
 
-/*  */
 sealed class SearchState {
   const SearchState();
 }
@@ -90,7 +89,6 @@ class _SearchScreenState extends State<SearchScreen> {
             child: UserList(
               data: friends,
               builder: (context, data) {
-                final user = data.user;
                 final friendship = data.friendship;
                 final status = friendship?.status;
 
