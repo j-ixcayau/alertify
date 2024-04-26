@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 sealed class Result<T, E> {}
 
 class Success<T, E> extends Result<T, E> {
@@ -7,7 +9,11 @@ class Success<T, E> extends Result<T, E> {
 }
 
 class Error<T, E> extends Result<T, E> {
-  Error(this.value);
+  Error(this.value) {
+    if (kDebugMode) {
+      print(value.toString());
+    }
+  }
 
   final E value;
 }

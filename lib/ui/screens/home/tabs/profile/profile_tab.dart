@@ -110,13 +110,13 @@ class _ProfileTabState extends State<ProfileTab> {
 
     final result = await userService.userFromId(authService.userId);
 
-    final newState = switch (result) {
+    state = switch (result) {
       Success(value: final user) => ProfileLoadedState(user: user),
       Error(value: final exception) =>
         ProfileLoadedErrorState(error: exception.message),
     };
 
-    setState(() => state = newState);
+    setState(() {});
   }
 
   Future<void> signOut() async {
