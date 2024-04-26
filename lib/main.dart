@@ -16,6 +16,7 @@ void main() async {
           options.dsn =
               'https://45708111855b9caac650f65f8e0c14fb@o4506367206948864.ingest.us.sentry.io/4507153958305792';
           options.environment = 'dev';
+          options.tracesSampleRate = 1.0;
         },
       );
 
