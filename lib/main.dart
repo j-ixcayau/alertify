@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'package:alertify/app.dart';
@@ -26,7 +27,11 @@ void main() async {
         options: DefaultFirebaseOptions.currentPlatform,
       );
 
-      runApp(const MainApp());
+      runApp(
+        const ProviderScope(
+          child: MainApp(),
+        ),
+      );
     },
     (exception, stackTrace) async {
       await Sentry.captureException(exception, stackTrace: stackTrace);

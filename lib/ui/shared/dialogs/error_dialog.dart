@@ -15,6 +15,8 @@ class ErrorDialog extends StatelessWidget {
     required String title,
     required IconData icon,
   }) {
+    FocusScope.of(context).unfocus();
+
     return showDialog(
       context: context,
       builder: (_) => ErrorDialog._(title: title, icon: icon),

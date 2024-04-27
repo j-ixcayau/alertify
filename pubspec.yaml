@@ -19,7 +19,7 @@ dependencies:
 
 dependency_overrides:
   package_info_plus: 5.0.1
-  web: ^0.5.1 # O
+  web: ^0.5.1 # Override dependency not used on mobile platforms
 
 dev_dependencies:
   flutter_test:
