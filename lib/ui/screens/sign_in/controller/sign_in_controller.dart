@@ -11,7 +11,7 @@ enum SignInStatus {
   success,
 }
 
-class SignInController extends AsyncNotifier<SignInStatus> {
+class SignInController extends AutoDisposeAsyncNotifier<SignInStatus> {
   final _authService = AuthService(FirebaseAuth.instance);
 
   @override
@@ -42,6 +42,6 @@ class SignInController extends AsyncNotifier<SignInStatus> {
 }
 
 final signInControllerProvider =
-    AsyncNotifierProvider<SignInController, SignInStatus>(
+    AsyncNotifierProvider.autoDispose<SignInController, SignInStatus>(
   () => SignInController(),
 );
