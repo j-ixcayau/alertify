@@ -41,7 +41,7 @@ extension type FriendshipService(FirebaseFirestore db) {
 
       return Success(data);
     } catch (e) {
-      return Error(Failure(message: e.toString()));
+      return Err(Failure(message: e.toString()));
     }
   }
 
@@ -97,7 +97,7 @@ extension type FriendshipService(FirebaseFirestore db) {
 
       return Success(data);
     } catch (e) {
-      return Error(Failure(message: e.toString()));
+      return Err(Failure(message: e.toString()));
     }
   }
 
@@ -110,7 +110,7 @@ extension type FriendshipService(FirebaseFirestore db) {
           .get();
 
       if (userSnapshot.docs.isEmpty) {
-        return Error(Failure(message: 'No user were found'));
+        return Err(Failure(message: 'No user were found'));
       }
 
       final user = userSnapshot.docs.first.toAppUser();
@@ -130,7 +130,7 @@ extension type FriendshipService(FirebaseFirestore db) {
 
       return Success((friendship: friendship, user: user));
     } catch (e) {
-      return Error(Failure(message: e.toString()));
+      return Err(Failure(message: e.toString()));
     }
   }
 
@@ -166,16 +166,16 @@ extension type FriendshipService(FirebaseFirestore db) {
       final friendship = firstDoc.toFriendship();
 
       if (friendship.status == FriendshipStatus.active) {
-        return Error(Failure(message: 'El usuario ya es tu amigo <3'));
+        return Err(Failure(message: 'El usuario ya es tu amigo <3'));
       }
 
       if (friendship.status == FriendshipStatus.pending) {
-        return Error(Failure(message: 'Ya existe una solicitud'));
+        return Err(Failure(message: 'Ya existe una solicitud'));
       }
 
       return Success(friendship);
     } catch (e) {
-      return Error(Failure(message: e.toString()));
+      return Err(Failure(message: e.toString()));
     }
   }
 
@@ -185,7 +185,7 @@ extension type FriendshipService(FirebaseFirestore db) {
       final snapshot = await friendshipRef.get();
 
       if (!snapshot.exists) {
-        return Error(Failure(message: 'The friendship request does not exist'));
+        return Err(Failure(message: 'The friendship request does not exist'));
       }
 
       await friendshipRef.update(
@@ -197,7 +197,7 @@ extension type FriendshipService(FirebaseFirestore db) {
 
       return Success(null);
     } catch (e) {
-      return Error(Failure(message: e.toString()));
+      return Err(Failure(message: e.toString()));
     }
   }
 }

@@ -25,7 +25,7 @@ class SignInController extends AutoDisposeAsyncNotifier<SignInStatus> {
 
       final failure = switch (result) {
         Success() => null,
-        Error(value: final exception) => exception,
+        Err(value: final exception) => exception,
       };
 
       if (failure == null) {

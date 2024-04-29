@@ -47,7 +47,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     final record = switch (result) {
       Success(value: final user) => (user: user, failure: null),
-      Error(value: final exception) => (user: null, failure: exception),
+      Err(value: final exception) => (user: null, failure: exception),
     };
 
     if (record.failure != null) {
@@ -79,7 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     final route = switch (result) {
       Success() => HomeScreen.route,
-      Error() => null,
+      Err() => null,
     };
 
     if (route != null) {

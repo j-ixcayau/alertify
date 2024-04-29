@@ -22,15 +22,15 @@ extension type AuthService(FirebaseAuth auth) {
         return Success(null);
       }
 
-      return Error(SignInAuthFailure.userNotFound);
+      return Err(SignInAuthFailure.userNotFound);
     } on FirebaseAuthException catch (e) {
       final failure = SignInAuthFailure.values.firstWhere(
         (it) => it.code == e.code,
         orElse: () => SignInAuthFailure.unknown,
       );
-      return Error(failure);
+      return Err(failure);
     } catch (e) {
-      return Error(SignInAuthFailure.unknown);
+      return Err(SignInAuthFailure.unknown);
     }
   }
 
@@ -57,15 +57,15 @@ extension type AuthService(FirebaseAuth auth) {
         );
       }
 
-      return Error(SignInAuthFailure.userNotFound);
+      return Err(SignInAuthFailure.userNotFound);
     } on FirebaseAuthException catch (e) {
       final failure = SignInAuthFailure.values.firstWhere(
         (it) => it.code == e.code,
         orElse: () => SignInAuthFailure.unknown,
       );
-      return Error(failure);
+      return Err(failure);
     } catch (e) {
-      return Error(SignInAuthFailure.unknown);
+      return Err(SignInAuthFailure.unknown);
     }
   }
 

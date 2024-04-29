@@ -97,8 +97,7 @@ class _FriendsTabState extends State<FriendsTab> {
 
     state = switch (result) {
       Success(value: final friends) => FriendLoadedState(friends: friends),
-      Error(value: final failure) =>
-        FriendLoadErrorState(error: failure.message),
+      Err(value: final failure) => FriendLoadErrorState(error: failure.message),
     };
 
     setState(() {});

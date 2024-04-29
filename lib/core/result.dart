@@ -8,8 +8,8 @@ class Success<T, E> extends Result<T, E> {
   final T value;
 }
 
-class Error<T, E> extends Result<T, E> {
-  Error(this.value) {
+class Err<T, E> extends Result<T, E> {
+  Err(this.value) {
     if (kDebugMode) {
       print(value.toString());
     }

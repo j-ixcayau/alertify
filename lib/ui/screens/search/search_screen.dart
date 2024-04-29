@@ -150,7 +150,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
     _state = switch (result) {
       Success(value: final friends) => SearchLoadedState(friends: friends),
-      Error(value: final failure) =>
+      Err(value: final failure) =>
         SearchLoadedErrorState(error: failure.message),
     };
 
@@ -166,7 +166,7 @@ class _SearchScreenState extends State<SearchScreen> {
     _state = switch (result) {
       Success(value: final friendship) =>
         SearchLoadedState(friends: [friendship]),
-      Error(value: final failure) =>
+      Err(value: final failure) =>
         SearchLoadedErrorState(error: failure.message)
     };
 
@@ -182,7 +182,7 @@ class _SearchScreenState extends State<SearchScreen> {
     final friendship = switch (result) {
       Success(value: final friendship) =>
         _addNewData(friendship, friendshipData),
-      Error() => _data
+      Err() => _data
     };
 
     _state = SearchLoadedState(friends: friendship);
@@ -218,7 +218,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           data,
         ),
-      Error() => _data
+      Err() => _data
     };
 
     _state = SearchLoadedState(friends: friendshipData);

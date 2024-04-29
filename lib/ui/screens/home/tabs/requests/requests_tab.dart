@@ -99,7 +99,7 @@ class _RequestsTabState extends State<RequestsTab> {
 
     state = switch (result) {
       Success(value: final friends) => RequestLoadedState(friends: friends),
-      Error(value: final failure) =>
+      Err(value: final failure) =>
         RequestLoadedErrorState(error: failure.message),
     };
 
