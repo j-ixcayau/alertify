@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:alertify/core/result.dart';
 import 'package:alertify/core/typedefs.dart';
-import 'package:alertify/services/auth_service.dart';
+import 'package:alertify/main.dart';
+import 'package:alertify/repositories/auth_repo.dart';
 import 'package:alertify/services/friendship_service.dart';
 import 'package:alertify/ui/screens/home/tabs/requests/widgets/app_bar.dart';
 import 'package:alertify/ui/screens/home/tabs/requests/widgets/request_tile.dart';
@@ -36,21 +37,22 @@ class RequestLoadedErrorState extends RequestState {
   final String error;
 }
 
-class RequestsTab extends StatefulWidget {
+class RequestsTab extends ConsumerStatefulWidget {
   const RequestsTab({super.key});
 
   @override
-  State<RequestsTab> createState() => _RequestsTabState();
+  ConsumerState<RequestsTab> createState() => _RequestsTabState();
 }
 
-class _RequestsTabState extends State<RequestsTab> {
-  final authService = AuthService(FirebaseAuth.instance);
+class _RequestsTabState extends ConsumerState<RequestsTab> {
+  late AuthRepo authRepo;
   final friendshipService = FriendshipService(FirebaseFirestore.instance);
 
   RequestState state = const RequestLoadingState();
 
   @override
   void initState() {
+    authRepo = ref.read(authRepoProvider);
     WidgetsBinding.instance.addPostFrameCallback((_) => loadRequests());
 
     super.initState();
@@ -95,7 +97,7 @@ class _RequestsTabState extends State<RequestsTab> {
     setState(() => state = const RequestLoadingState());
 
     final result =
-        await friendshipService.getFriendshipsRequest(authService.userId);
+        await friendshipService.getFriendshipsRequest(authRepo.currentUserId);
 
     state = switch (result) {
       Success(value: final friends) => RequestLoadedState(friends: friends),

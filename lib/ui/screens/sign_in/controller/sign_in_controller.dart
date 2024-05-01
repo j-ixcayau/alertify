@@ -1,10 +1,6 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:alertify/core/result.dart';
-import 'package:alertify/services/auth_service.dart';
 
 enum SignInStatus {
   none,
@@ -12,8 +8,6 @@ enum SignInStatus {
 }
 
 class SignInController extends AutoDisposeAsyncNotifier<SignInStatus> {
-  final _authService = AuthService(FirebaseAuth.instance);
-
   @override
   FutureOr<SignInStatus> build() => SignInStatus.none;
 
@@ -21,7 +15,10 @@ class SignInController extends AutoDisposeAsyncNotifier<SignInStatus> {
     try {
       state = const AsyncLoading();
 
-      final result = await _authService.signIn(email, password);
+      throw Exception();
+
+      /* final authRepo = ref.read(authRepoProvider);
+      final result = await authRepo.signIn(email, password);
 
       final failure = switch (result) {
         Success() => null,
@@ -32,11 +29,9 @@ class SignInController extends AutoDisposeAsyncNotifier<SignInStatus> {
         state = const AsyncData(SignInStatus.success);
       } else {
         state = AsyncError(failure, StackTrace.current);
-      }
+      } */
     } catch (e, s) {
       state = AsyncError(e, s);
-    } finally {
-      //
     }
   }
 }

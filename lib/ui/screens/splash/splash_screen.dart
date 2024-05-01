@@ -1,30 +1,33 @@
 import 'package:flutter/material.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:alertify/services/auth_service.dart';
+import 'package:alertify/main.dart';
+import 'package:alertify/repositories/auth_repo.dart';
 import 'package:alertify/ui/screens/auth/auth_screen.dart';
 import 'package:alertify/ui/screens/home/home_screen.dart';
 import 'package:alertify/ui/shared/extensions/build_context.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   static const String route = '/';
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
-  final authService = AuthService(FirebaseAuth.instance);
+class _SplashScreenState extends ConsumerState<SplashScreen> {
+  late AuthRepo authRepo;
 
   @override
   void initState() {
+    authRepo = ref.read(authRepoProvider);
+
     Future<void>.delayed(
       const Duration(seconds: 3),
       () {
-        final path = authService.logged ? HomeScreen.route : AuthScreen.route;
+        final path = authRepo.logged ? HomeScreen.route : AuthScreen.route;
 
         context.pushReplacementNamed<void>(path);
       },

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:alertify/core/result.dart';
 import 'package:alertify/entities/app_user.dart';
-import 'package:alertify/services/auth_service.dart';
+import 'package:alertify/main.dart';
+import 'package:alertify/repositories/auth_repo.dart';
 import 'package:alertify/services/user_service.dart';
 import 'package:alertify/ui/screens/home/home_screen.dart';
 import 'package:alertify/ui/screens/sign_in/sign_in_screen.dart';
@@ -16,17 +17,17 @@ import 'package:alertify/ui/shared/extensions/build_context.dart';
 import 'package:alertify/ui/shared/validators/form_validator.dart';
 import 'package:alertify/ui/shared/widgets/flutter_masters_rich_text.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
 
   static const String route = '/sign_up';
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
-  final authService = AuthService(FirebaseAuth.instance);
+class _SignUpScreenState extends ConsumerState<SignUpScreen> {
+  late AuthRepo authRepo;
   final userService = UserService(FirebaseFirestore.instance);
 
   late final formKey = GlobalKey<FormState>();
@@ -35,56 +36,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   var email = '';
   var password = '';
 
-  Future<void> signUp() async {
-    if (!formKey.currentState!.validate()) {
-      return;
-    }
+  @override
+  void initState() {
+    authRepo = ref.read(authRepoProvider);
 
-    final result = await showLoader(
-      context,
-      authService.signUp(email, password),
-    );
-
-    final record = switch (result) {
-      Success(value: final user) => (user: user, failure: null),
-      Err(value: final exception) => (user: null, failure: exception),
-    };
-
-    if (record.failure != null) {
-      final data = record.failure!.errorData;
-
-      ErrorDialog.show(
-        context,
-        title: data.message,
-        icon: data.icon,
-      );
-      return;
-    }
-
-    createUser(record.user!);
-  }
-
-  Future<void> createUser(AppUser createdUser) async {
-    final newUser = AppUser(
-      id: createdUser.id,
-      username: userName,
-      email: createdUser.email,
-      photoUrl: createdUser.photoUrl,
-    );
-
-    final result = await showLoader(
-      context,
-      userService.createUser(newUser),
-    );
-
-    final route = switch (result) {
-      Success() => HomeScreen.route,
-      Err() => null,
-    };
-
-    if (route != null) {
-      return context.pushNamedAndRemoveUntil<void>(route);
-    }
+    super.initState();
   }
 
   @override
@@ -174,5 +130,57 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> signUp() async {
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
+
+    final result = await showLoader(
+      context,
+      authRepo.signUp(email, password),
+    );
+
+    final record = switch (result) {
+      Success(value: final user) => (user: user, failure: null),
+      Err(value: final exception) => (user: null, failure: exception),
+    };
+
+    if (record.failure != null) {
+      final data = record.failure!.errorData;
+
+      ErrorDialog.show(
+        context,
+        title: data.message,
+        icon: data.icon,
+      );
+      return;
+    }
+
+    createUser(record.user!);
+  }
+
+  Future<void> createUser(AppUser createdUser) async {
+    final newUser = AppUser(
+      id: createdUser.id,
+      username: userName,
+      email: createdUser.email,
+      photoUrl: createdUser.photoUrl,
+    );
+
+    final result = await showLoader(
+      context,
+      userService.createUser(newUser),
+    );
+
+    final route = switch (result) {
+      Success() => HomeScreen.route,
+      Err() => null,
+    };
+
+    if (route != null) {
+      return context.pushNamedAndRemoveUntil<void>(route);
+    }
   }
 }

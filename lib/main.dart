@@ -2,12 +2,18 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'package:alertify/app.dart';
 import 'package:alertify/firebase_options.dart';
+import 'package:alertify/repositories/auth_repo.dart';
+import 'package:alertify/services/auth_service.dart';
+
+final authRepoProvider =
+    Provider<AuthRepo>((ref) => FirebaseAuthAdapter(FirebaseAuth.instance));
 
 void main() async {
   runZonedGuarded(
