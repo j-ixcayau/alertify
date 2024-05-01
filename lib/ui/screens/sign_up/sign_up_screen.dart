@@ -5,11 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:alertify/core/result.dart';
 import 'package:alertify/entities/app_user.dart';
+import 'package:alertify/features/sign_in/presentation/page/sign_in_screen.dart';
 import 'package:alertify/main.dart';
 import 'package:alertify/repositories/auth_repo.dart';
 import 'package:alertify/services/user_service.dart';
 import 'package:alertify/ui/screens/home/home_screen.dart';
-import 'package:alertify/features/sign_in/presentations/page/sign_in_screen.dart';
 import 'package:alertify/ui/shared/dialogs/error_dialog.dart';
 import 'package:alertify/ui/shared/dialogs/loader_dialog.dart';
 import 'package:alertify/ui/shared/extensions/auth_failure_x.dart';
