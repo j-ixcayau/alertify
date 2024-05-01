@@ -9,7 +9,7 @@ import 'package:alertify/main.dart';
 import 'package:alertify/repositories/auth_repo.dart';
 import 'package:alertify/services/user_service.dart';
 import 'package:alertify/ui/screens/home/home_screen.dart';
-import 'package:alertify/ui/screens/sign_in/sign_in_screen.dart';
+import 'package:alertify/features/sign_in/presentations/page/sign_in_screen.dart';
 import 'package:alertify/ui/shared/dialogs/error_dialog.dart';
 import 'package:alertify/ui/shared/dialogs/loader_dialog.dart';
 import 'package:alertify/ui/shared/extensions/auth_failure_x.dart';

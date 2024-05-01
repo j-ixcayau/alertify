@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:alertify/ui/screens/sign_in/sign_in_screen.dart';
+import 'package:alertify/features/sign_in/presentations/page/sign_in_screen.dart';
 import 'package:alertify/ui/screens/sign_up/sign_up_screen.dart';
 import 'package:alertify/ui/shared/extensions/build_context.dart';
 

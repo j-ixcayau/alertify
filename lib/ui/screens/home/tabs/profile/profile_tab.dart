@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:alertify/ui/screens/auth/auth_screen.dart';
 import 'package:alertify/ui/screens/home/tabs/profile/controller/profile_tab_controller.dart';
+import 'package:alertify/ui/shared/dialogs/loader_dialog.dart';
 import 'package:alertify/ui/shared/extensions/build_context.dart';
 import 'package:alertify/ui/shared/theme/palette.dart';
 
@@ -46,8 +49,7 @@ class ProfileTab extends ConsumerWidget {
                   ),
                   const Spacer(),
                   ElevatedButton(
-                    // onPressed: () => signOut(),
-                    onPressed: () {},
+                    onPressed: () => signOut(context),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Palette.darkGray,
                     ),
@@ -123,12 +125,13 @@ class ProfileTab extends ConsumerWidget {
     setState(() {});
   }
 
-  Future<void> signOut() async {
+ */
+  Future<void> signOut(BuildContext context) async {
     await showLoader(
       context,
-      authService.signOut(),
+      FirebaseAuth.instance.signOut(),
     );
 
     return context.pushNamedAndRemoveUntil<void>(AuthScreen.route);
-  } */
+  }
 }

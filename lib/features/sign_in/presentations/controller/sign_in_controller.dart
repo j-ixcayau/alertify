@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:alertify/core/providers.dart';
+import 'package:alertify/core/result.dart';
+
 enum SignInStatus {
   none,
   success,
@@ -15,9 +18,7 @@ class SignInController extends AutoDisposeAsyncNotifier<SignInStatus> {
     try {
       state = const AsyncLoading();
 
-      throw Exception();
-
-      /* final authRepo = ref.read(authRepoProvider);
+      final authRepo = ref.read(signinServiceProvider);
       final result = await authRepo.signIn(email, password);
 
       final failure = switch (result) {
@@ -29,7 +30,7 @@ class SignInController extends AutoDisposeAsyncNotifier<SignInStatus> {
         state = const AsyncData(SignInStatus.success);
       } else {
         state = AsyncError(failure, StackTrace.current);
-      } */
+      }
     } catch (e, s) {
       state = AsyncError(e, s);
     }

@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:alertify/failures/auth_failure.dart';
 import 'package:alertify/ui/screens/home/home_screen.dart';
-import 'package:alertify/ui/screens/sign_in/controller/sign_in_controller.dart';
+import 'package:alertify/features/sign_in/presentations/controller/sign_in_controller.dart';
 import 'package:alertify/ui/screens/sign_up/sign_up_screen.dart';
 import 'package:alertify/ui/shared/dialogs/error_dialog.dart';
 import 'package:alertify/ui/shared/dialogs/loader_dialog.dart';
