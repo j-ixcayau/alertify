@@ -65,4 +65,25 @@ class FriendshipService implements FriendshipRepository {
       rethrow;
     }
   }
+
+  @override
+  FutureResult<void> cancelFriendshipRequest(String friendshipId) async {
+    try {
+      final ref = _collection.doc(friendshipId);
+      final snapshot = await ref.get();
+      if (!snapshot.exists) {
+        return Err(Failure(message: 'Friendship does not exists'));
+      }
+      await ref.set(
+        {
+          'status': FriendshipStatus.archived.name,
+          'updatedAt': FieldValue.serverTimestamp(),
+        },
+        SetOptions(merge: true),
+      );
+      return Success(null);
+    } catch (e) {
+      return Err(Failure(message: e.toString()));
+    }
+  }
 }

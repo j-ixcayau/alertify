@@ -26,6 +26,6 @@ linter:
 analyzer:
   errors:
     unused_import: error
-    invalid_annotation_target: ignore
-    avoid_renaming_method_parameters: ignore
-    type_annotate_public_apis: ignore
+    invalid_annotation_target: error
+    avoid_renaming_method_parameters: error
+    type_annotate_public_apis: error
