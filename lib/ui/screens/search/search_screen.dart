@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:alertify/core/result.dart';
 import 'package:alertify/core/typedefs.dart';
 import 'package:alertify/entities/friendship.dart';
-import 'package:alertify/services/auth_service.dart';
+import 'package:alertify/main.dart';
+import 'package:alertify/repositories/auth_repo.dart';
 import 'package:alertify/services/friendship_service.dart';
 import 'package:alertify/ui/screens/search/widgets/app_bar.dart';
 import 'package:alertify/ui/shared/dialogs/loader_dialog.dart';
@@ -38,16 +39,16 @@ class SearchLoadedErrorState extends SearchState {
   final String error;
 }
 
-class SearchScreen extends StatefulWidget {
+class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
   static const String route = '/search';
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  ConsumerState<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
-  final _authService = AuthService(FirebaseAuth.instance);
+class _SearchScreenState extends ConsumerState<SearchScreen> {
+  late AuthRepo authRepo;
   final _friendshipService = FriendshipService(FirebaseFirestore.instance);
 
   SearchState _state = const SearchLoadingState();
@@ -57,11 +58,12 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void initState() {
+    authRepo = ref.read(authRepoProvider);
+    _userId = authRepo.currentUserId;
+
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => _loadFriendshipRequest(),
     );
-
-    _userId = _authService.userId;
 
     super.initState();
   }
@@ -146,11 +148,11 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() => _state = const SearchLoadingState());
 
     final result =
-        await _friendshipService.getFriendshipsRequest(_authService.userId);
+        await _friendshipService.getFriendshipsRequest(authRepo.currentUserId);
 
     _state = switch (result) {
       Success(value: final friends) => SearchLoadedState(friends: friends),
-      Error(value: final failure) =>
+      Err(value: final failure) =>
         SearchLoadedErrorState(error: failure.message),
     };
 
@@ -161,12 +163,12 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() => _state = const SearchLoadingState());
 
     final result =
-        await _friendshipService.searchUser(_authService.userId, email);
+        await _friendshipService.searchUser(authRepo.currentUserId, email);
 
     _state = switch (result) {
       Success(value: final friendship) =>
         SearchLoadedState(friends: [friendship]),
-      Error(value: final failure) =>
+      Err(value: final failure) =>
         SearchLoadedErrorState(error: failure.message)
     };
 
@@ -182,7 +184,7 @@ class _SearchScreenState extends State<SearchScreen> {
     final friendship = switch (result) {
       Success(value: final friendship) =>
         _addNewData(friendship, friendshipData),
-      Error() => _data
+      Err() => _data
     };
 
     _state = SearchLoadedState(friends: friendship);
@@ -218,7 +220,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           data,
         ),
-      Error() => _data
+      Err() => _data
     };
 
     _state = SearchLoadedState(friends: friendshipData);

@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:alertify/core/result.dart';
-import 'package:alertify/services/auth_service.dart';
+import 'package:alertify/failures/auth_failure.dart';
+import 'package:alertify/features/sign_in/presentation/controller/sign_in_controller.dart';
 import 'package:alertify/ui/screens/home/home_screen.dart';
 import 'package:alertify/ui/screens/sign_up/sign_up_screen.dart';
 import 'package:alertify/ui/shared/dialogs/error_dialog.dart';
@@ -13,53 +15,83 @@ import 'package:alertify/ui/shared/extensions/build_context.dart';
 import 'package:alertify/ui/shared/validators/form_validator.dart';
 import 'package:alertify/ui/shared/widgets/flutter_masters_rich_text.dart';
 
-class SignInScreen extends StatefulWidget {
+class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
 
   static const String route = '/sign_in';
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  ConsumerState<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
-  final authService = AuthService(FirebaseAuth.instance);
+class _SignInScreenState extends ConsumerState<SignInScreen> {
+  (Completer<void>, Future<dynamic>)? _completer;
 
-  late final formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   var email = '';
   var password = '';
 
-  Future<void> signIn() async {
+  Future<void> _signIn() async {
     if (!formKey.currentState!.validate()) {
       return;
     }
 
-    final result = await showLoader(
-      context,
-      authService.signIn(email, password),
-    );
+    ref.read(signInControllerProvider.notifier).signIn(email, password);
+  }
 
-    final failure = switch (result) {
-      Success() => null,
-      Error(value: final exception) => exception,
-    };
+  Future<void> _showLoader() async {
+    _completer?.$1.complete();
+    await _completer?.$2;
 
-    if (failure != null) {
-      final data = failure.errorData;
+    _completer = showLoaderCompleter(context);
+  }
 
-      ErrorDialog.show(
-        context,
-        title: data.message,
-        icon: data.icon,
-      );
+  Future<void> _hideLoader() async {
+    if (_completer == null) {
       return;
     }
 
-    return context.pushNamedAndRemoveUntil<void>(HomeScreen.route);
+    _completer!.$1.complete();
+    await _completer!.$2;
+
+    _completer = null;
   }
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(signInControllerProvider, (_, next) {
+      next.when(
+        data: (status) async {
+          await _hideLoader();
+
+          if (status != SignInStatus.success) {
+            return;
+          }
+
+          context.pushNamedAndRemoveUntil<void>(HomeScreen.route);
+        },
+        error: (e, s) async {
+          await _hideLoader();
+
+          if (e is! SignInAuthFailure) {
+            // Handle other errors
+            return;
+          }
+
+          final data = e.errorData;
+
+          ErrorDialog.show(
+            context,
+            title: data.message,
+            icon: data.icon,
+          );
+        },
+        loading: () {
+          _showLoader();
+        },
+      );
+    });
+
     final colorScheme = context.colorScheme;
     return Scaffold(
       body: SafeArea(
@@ -104,7 +136,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                     const SizedBox(height: 28),
                     ElevatedButton(
-                      onPressed: signIn,
+                      onPressed: _signIn,
                       child: const Text('Sign In'),
                     ),
                     const SizedBox(height: 56),

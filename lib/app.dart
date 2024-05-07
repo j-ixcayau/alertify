@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:sentry_flutter/sentry_flutter.dart';
 
+import 'package:alertify/features/sign_in/presentation/page/sign_in_screen.dart';
 import 'package:alertify/ui/screens/auth/auth_screen.dart';
 import 'package:alertify/ui/screens/home/home_screen.dart';
 import 'package:alertify/ui/screens/search/search_screen.dart';
-import 'package:alertify/ui/screens/sign_in/sign_in_screen.dart';
 import 'package:alertify/ui/screens/sign_up/sign_up_screen.dart';
 import 'package:alertify/ui/screens/splash/splash_screen.dart';
 import 'package:alertify/ui/shared/theme/app_theme.dart';

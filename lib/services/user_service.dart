@@ -14,12 +14,12 @@ extension type UserService(FirebaseFirestore db) {
       final result = await _collection.doc(id).get();
 
       if (!result.exists) {
-        return Error(Failure(message: 'User not found'));
+        return Err(Failure(message: 'User not found'));
       }
 
       return Success(result.toAppUser());
     } catch (e) {
-      return Error(Failure(message: e.toString()));
+      return Err(Failure(message: e.toString()));
     }
   }
 
@@ -29,7 +29,7 @@ extension type UserService(FirebaseFirestore db) {
 
       return Success(user);
     } catch (e) {
-      return Error(Failure(message: e.toString()));
+      return Err(Failure(message: e.toString()));
     }
   }
 }
