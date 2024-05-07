@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:alertify/core/typedefs.dart';
 import 'package:alertify/features/friendship/presentation/controller/friendship_controller.dart';
-import 'package:alertify/ui/screens/home/tabs/friends/widgets/app_bar.dart';
+import 'package:alertify/features/friendship/presentation/page/widgets/app_bar.dart';
 import 'package:alertify/ui/screens/search/search_screen.dart';
 import 'package:alertify/ui/shared/dialogs/loader_dialog.dart';
 import 'package:alertify/ui/shared/extensions/build_context.dart';

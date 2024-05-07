@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:alertify/ui/screens/home/tabs/friends/friends_tab.dart';
+import 'package:alertify/features/friendship/presentation/page/friends_tab.dart';
 import 'package:alertify/ui/screens/home/tabs/home/home_tab.dart';
 import 'package:alertify/ui/screens/home/tabs/profile/profile_tab.dart';
 import 'package:alertify/ui/screens/home/tabs/requests/requests_tab.dart';
