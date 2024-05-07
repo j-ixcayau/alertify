@@ -16,7 +16,7 @@ extension type FriendshipService(FirebaseFirestore db) {
   ) async {
     try {
       final snapshot = await _collection
-          .where('senderId', isNotEqualTo: userId)
+          .where('sender', isNotEqualTo: userId)
           .where('users', arrayContains: userId)
           .where('status', isEqualTo: FriendshipStatus.pending.name)
           .get();
@@ -35,7 +35,7 @@ extension type FriendshipService(FirebaseFirestore db) {
       userIds.removeWhere((it) => it == null);
 
       final usersDocs =
-          await _userCollection.where('id', arrayContains: userIds).get();
+          await _userCollection.where('id', whereIn: userIds).get();
 
       final users = usersDocs.docs.map((it) => it.toAppUser()).toList();
 
@@ -148,6 +148,41 @@ extension type FriendshipService(FirebaseFirestore db) {
         },
       );
 
+      return Success(null);
+    } catch (e) {
+      return Err(Failure(message: e.toString()));
+    }
+  }
+
+  FutureResult<void> acceptFriendshipRequest(
+    String friendshipId,
+  ) async {
+    try {
+      final ref = _collection.doc(friendshipId);
+      final snapshot = await ref.get();
+      if (!snapshot.exists) {
+        return Err(Failure(message: 'Friendship no exists'));
+      }
+      await ref.update(
+        {
+          'status': FriendshipStatus.active.name,
+          'updatedAt': FieldValue.serverTimestamp(),
+        },
+      );
+      return Success(null);
+    } catch (e) {
+      return Err(Failure(message: e.toString()));
+    }
+  }
+
+  FutureResult<void> rejectFriendshipRequest(String friendshipId) async {
+    try {
+      final ref = _collection.doc(friendshipId);
+      final snapshot = await ref.get();
+      if (!snapshot.exists) {
+        return Err(Failure(message: 'Friendship no exists'));
+      }
+      await ref.delete();
       return Success(null);
     } catch (e) {
       return Err(Failure(message: e.toString()));
